@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# flask
+__pycache__
+
 # production
 /build
 
@@ -25,10 +28,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+next-env.d.ts
+.env
 venv
 
 # vercel

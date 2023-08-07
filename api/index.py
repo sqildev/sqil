@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
+from validate_email import validate_email
 
 load_dotenv()
 
@@ -36,14 +37,17 @@ def add_user():
     pw = sha256_crypt.encrypt(data["pw"])
 
     user = Users(email, pw)
-
-    db.session.add(user)
-    try:
-        db.session.commit()
-    except:
-        return f"An account already exists using {email}."
-
-    return f"Account created using {email}."
+    
+    if validate_email(email, verify=True):
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            return f"An account already exists using {email}."
+        
+        return f"Account created using {email}."
+    else:
+        return f"Invalid email."
 
 @app.post("/api/login")
 def check_user():
