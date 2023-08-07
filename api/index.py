@@ -1,11 +1,16 @@
 import os
-import subprocess
+import sys
+from io import StringIO
 from dotenv import load_dotenv
+
 from flask import Flask, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+
 from passlib.hash import sha256_crypt
 from validate_email import validate_email
+
+from js2py import eval_js
 
 load_dotenv()
 
@@ -97,54 +102,28 @@ def delete_user():
 @app.post("/api/compiler")
 def compiler():
     data = request.get_json()
-    language = data["language"]
-    filename = data["filename"]
+    lang = data["language"]
     code = data["code"]
 
-    path = "/../../../tmp/" + filename
+    def run(lang, code):
+        output = StringIO()
+        sys.stdout = output
 
-    def deleteFiles():
-        for f in os.listdir("/../../../tmp/"):
-            os.remove(os.path.join("/../../../tmp/", f))
-    
-    def run(command: str, compile=""):        
-        if compile:
-            compile_result = subprocess.run(
-                compile.split(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
+        if lang == "py":
+            try:
+                exec(code)
+                return {"stdout": str(output.getvalue()), "stderr": ""}
+            except Exception as e:
+                return {"stdout": "", "stderr": str(e)}
+            
+        elif lang == "js":
+            try:
+                eval_js(code)
+                return {"stdout": str(output.getvalue()), "stderr": ""}
+            except Exception as e:
+                return {"stdout": "", "stderr": str(e)}
 
-            if compile_result.stderr:
-                deleteFiles()
-                return {"stdout": "", "stderr": compile_result.stderr.decode()}
-        
-        result = subprocess.run(
-            command.split(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        else:
+            raise "Unsupported language"
 
-        deleteFiles()
-
-        return {"stdout": result.stdout.decode(), "stderr": result.stderr.decode()}
-    
-    file = f"{path}.{language}"
-
-    f = open(file, "x")
-    f.close()
-
-    with open(file, "w") as f:
-        f.write(code + "\n")
-    
-    if language == "py":
-        return run(f"python {file}")
-    elif language == "js":
-        return run(f"node {file}")
-    elif language == "c":
-        return run(path + ".exe", compile=f"gcc {file} -o {path}.exe")
-    elif language == "cpp":
-        return run(path + ".exe", compile=f"g++ {file} -o {path}.exe")
-    else:
-        deleteFiles()
-        return "Unsupported programming language provided."
+    return run(lang, code)
