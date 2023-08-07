@@ -26,7 +26,7 @@ export default function HomePage() {
 
   return (
     <AppShell
-      header={{ height: 50 }}
+      header={{ height: 70 }}
       navbar={{
         width: 300,
         breakpoint: "sm",
@@ -52,31 +52,31 @@ export default function HomePage() {
             />
             <Title order={3}>OctiLearn</Title>
           </Group>
-          <Group gap="xs">
+          <Group gap="sm">
             <ActionIcon
-              h={30}
-              w={30}
+              component="a"
+              href="https://github.com/OctiLearnProject"
+              h={40}
+              w={40}
             >
-              <a style={{ color: "inherit" }} href="https://github.com/OctiLearnProject/">
-                <IconBrandGithub />
-              </a>
+              <IconBrandGithub />
             </ActionIcon>
             <ActionIcon
-              h={30}
-              w={30}
+              component="a"
+              href="mailto:octilearnteam@gmail.com"
+              h={40}
+              w={40}
             >
-              <a style={{ color: "inherit" }} href="mailto:octilearnproject@gmail.com">
-                <IconMail />
-              </a>
+              <IconMail />
             </ActionIcon>
             <LightDark
               component={ActionIcon}
-              lightProps={{ onClick: () => setColorScheme("dark"), p: 2 }}
-              darkProps={{ onClick: () => setColorScheme("light"), p: 1.5 }}
+              lightProps={{ onClick: () => setColorScheme("dark"), p: 3 }}
+              darkProps={{ onClick: () => setColorScheme("light"), p: 2 }}
               light={<IconMoon />}
               dark={<IconSun />}
-              h={30}
-              w={30}
+              h={40}
+              w={40}
             />
           </Group>
         </Group>
