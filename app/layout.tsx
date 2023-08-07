@@ -2,7 +2,7 @@ import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "./theme";
-import Shell from "./shell";
+import Shell from "./Shell";
 
 export const metadata = {
   title: "OctiLearn",
