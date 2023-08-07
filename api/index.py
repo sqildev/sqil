@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import sha256_crypt
+from validate_email import validate_email
 
 load_dotenv()
 
@@ -32,17 +34,20 @@ db.create_all()
 def add_user():
     data = request.get_json()
     email = data["email"]
-    pw = data["pw"]
+    pw = sha256_crypt.encrypt(data["pw"])
 
     user = Users(email, pw)
-
-    db.session.add(user)
-    try:
-        db.session.commit()
-    except:
-        return f"An account already exists using {email}."
-
-    return f"Account created using {email}."
+    
+    if validate_email(email, verify=True):
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            return f"An account already exists using {email}."
+        
+        return f"Account created using {email}."
+    else:
+        return f"Invalid email."
 
 @app.post("/api/login")
 def check_user():
@@ -57,7 +62,7 @@ def check_user():
             check_pw = db.session.query(Users).filter(Users.email == email)
 
             for result in check_pw:
-                if result.pw == pw:
+                if sha256_crypt.verify(pw, result.pw):
                     return "Login successful"
                 else:
                     return f"Incorrect password."
@@ -77,7 +82,7 @@ def delete_user():
             check_pw = db.session.query(Users).filter(Users.email == email)
 
             for result in check_pw:
-                if result.pw == pw:
+                if sha256_crypt.verify(pw, result.pw):
                     db.session.query(Users).filter(Users.email == email).delete()
                     try:
                         db.session.commit()
@@ -115,11 +120,9 @@ def compiler():
                 return {"stdout": "", "stderr": compile_result.stderr.decode()}
         
         result = subprocess.run(
-            #command.split(),
-            ["which", "node"],
+            command.split(),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            shell=True
         )
 
         deleteFiles()
