@@ -2,6 +2,7 @@ import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "./theme";
+import Shell from "./shell";
 
 export const metadata = {
   title: "OctiLearn",
@@ -17,7 +18,9 @@ export default function RootLayout({ children }: { children: any }) {
         <link rel="icon" href="/logo.ico" />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <Shell>{children}</Shell>
+        </MantineProvider>
       </body>
     </html>
   );
