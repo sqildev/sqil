@@ -1,0 +1,14 @@
+.dark {
+  display: block;
+  @mixin light {
+    display: none;
+  }
+}
+
+.light {
+  display: block;
+  @mixin dark {
+    display: none;
+    background: red;
+  }
+}
