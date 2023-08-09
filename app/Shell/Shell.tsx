@@ -1,107 +1,180 @@
 import {
   ActionIcon,
   AppShell,
-  Avatar,
   Box,
   Burger,
+  Button,
+  Center,
+  Container,
   Group,
-  MantineStyleProp,
-  darken,
+  Menu,
+  Title,
+  UnstyledButton,
   useMantineColorScheme,
-  useMantineTheme,
+  rem,
+  ScrollArea,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconBrandGithub,
-  IconMail,
+  IconArticle,
+  IconBooks,
+  IconChevronDown,
+  IconInfoSquareRoundedFilled,
   IconMoon,
   IconSun,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import React from "react";
-import LightDark from "./LightDark";
+import React, { ReactNode } from "react";
+import Logo from "../Logo";
+import LightDark from "./LightDark/LightDark";
+import LinksGroup from "./NavbarLinksGroup/";
+import classes from "./shell.module.css";
 
-interface Props {
-  pad?: number;
-  href?: string;
-  cursor?: string;
-  onClick?: () => void;
-  children?: JSX.Element;
-  rest?: MantineStyleProp;
-}
+const links = [
+  {
+    link: "about",
+    label: "About",
+    icon: IconInfoSquareRoundedFilled,
+    initiallyOpened: true,
+    links: [
+      {
+        link: "/about-us",
+        label: "About Us",
+      },
+      {
+        link: "/team",
+        label: "Our Team",
+      },
+      {
+        link: "/philosophy",
+        label: "Philosophy",
+      },
+    ],
+  },
+  {
+    link: "courses",
+    label: "Courses",
+    icon: IconBooks,
+    initiallyOpened: true,
+    links: [
+      {
+        link: "/courses",
+        label: "Search Courses",
+      },
+      {
+        link: "/create-course",
+        label: "Create a Course",
+      },
+    ],
+  },
+  {
+    link: "/blog",
+    label: "Blog",
+    icon: IconArticle,
+  },
+];
 
-export default function Shell({ children }: Props) {
+export default function Shell({ children }: { children?: ReactNode }) {
+  const [opened, { toggle }] = useDisclosure(false);
   const { setColorScheme } = useMantineColorScheme();
-  const [opened, { toggle }] = useDisclosure();
-  const theme = useMantineTheme();
 
-  function HeaderButton({ children, href, onClick, pad, ...rest }: Props) {
-    const size = 50;
-    const Comp = ({ children, cursor, ...rest }: Props) => {
+  const items = links.map((link) => {
+    const menuItems = link.links?.map((item) => (
+      <Menu.Item key={item.link} component={Link} href={item.link}>
+        {item.label}
+      </Menu.Item>
+    ));
+
+    if (menuItems) {
       return (
-        <>
-          {href ? (
-            <Box p="md" component="a" href={href} {...rest}>
-              {children}
-            </Box>
-          ) : (
-            <Box p="md" onClick={onClick} {...rest}>{children}</Box>
-          )}
-        </>
+        <Menu
+          key={link.label}
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+          withinPortal
+        >
+          <Menu.Target>
+            <Center className={classes.link}>
+              <span className={classes.linkLabel}>{link.label}</span>
+              <IconChevronDown size="0.9rem" stroke={1.5} />
+            </Center>
+          </Menu.Target>
+          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+        </Menu>
       );
-    };
+    }
 
     return (
-      <Comp {...rest}>
-        <ActionIcon h={size} w={size} c={theme.colors.octo[1]} p={pad}>
-          {children}
-        </ActionIcon>
-      </Comp>
+      <Link key={link.label} href={link.link} className={classes.link}>
+        {link.label}
+      </Link>
     );
-  }
-  const iconSize = 30;
+  });
 
   return (
-    <AppShell header={{ height: 100 }} p="md">
-      <AppShell.Header p="sm" bg={darken(theme.colors.octo[9], 0.5)}>
-        <Group justify="space-evenly">
-          <Group gap={0}>
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              size="md"
-              mr="md"
-              hiddenFrom="md"
-            />
-            <Avatar
-              component={Link}
-              href="/"
-              src="/logo.ico"
-              alt="OctiLearn Logo"
-              size="lg"
-              radius="0%"
-              mr="xs"
-            />
-          </Group>
-          <Group gap={0}>
-            <HeaderButton href="https://github.com/OctiLearnProject">
-              <IconBrandGithub size={iconSize} />
-            </HeaderButton>
-            <HeaderButton href="mailto:octilearnteam@gmail.com">
-              <IconMail size={iconSize} />
-            </HeaderButton>
-            <LightDark
-              component={HeaderButton}
-              lightProps={{ onClick: () => setColorScheme("dark"), pad: 8 }}
-              darkProps={{ onClick: () => setColorScheme("light"), pad: 7 }}
-              light={<IconMoon size={iconSize} />}
-              dark={<IconSun size={iconSize} />}
-            />
-          </Group>
-        </Group>
+    <AppShell
+      header={{
+        height: 100,
+      }}
+      navbar={{
+        breakpoint: "sm",
+        width: 300,
+        collapsed: { mobile: !opened, desktop: true },
+      }}
+      withBorder={false}
+    >
+      <AppShell.Header className={classes.header}>
+        <Container>
+          <div className={classes.inner}>
+            <UnstyledButton component={Link} href="/">
+              <Logo />
+            </UnstyledButton>
+            <Group>
+              <Group gap={5} visibleFrom="sm">
+                {items}
+                <Button
+                  bg="none"
+                  className={classes.button}
+                  component={Link}
+                  href="/login"
+                >
+                  Sign in
+                </Button>
+              </Group>
+              <LightDark
+                component={ActionIcon}
+                lightProps={{ onClick: () => setColorScheme("dark") }}
+                darkProps={{ onClick: () => setColorScheme("light") }}
+                light={<IconMoon size={30} />}
+                dark={<IconSun size={30} />}
+                h={40}
+                w={40}
+                p={4}
+              />
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
+            </Group>
+          </div>
+        </Container>
       </AppShell.Header>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Navbar className={classes.navbar}>
+        <Group m="xl" justify="center">
+          <ScrollArea className={classes.links}>
+            <div className={classes.linksInner}>
+              {links.map((link) => (
+                <LinksGroup {...link} key={link.label} />
+              ))}
+            </div>
+          </ScrollArea>
+        </Group>
+      </AppShell.Navbar>
+
+      <AppShell.Main mt="xl">{children}</AppShell.Main>
     </AppShell>
   );
 }

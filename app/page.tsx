@@ -1,3 +1,1 @@
-export default function HomePage() {
-  return <>Main</>;
-}
+export { default } from "./home";

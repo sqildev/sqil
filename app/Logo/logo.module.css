@@ -1,0 +1,13 @@
+.logo {
+  height: rem(170px);
+}
+
+.logoSection {
+  @mixin light {
+    fill: #000000;
+  }
+
+  @mixin dark {
+    fill: #ffffff;
+  }
+}

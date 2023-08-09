@@ -3,11 +3,11 @@ import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "./theme";
 import Shell from "./Shell";
+import "./globals.css";
 
 export const metadata = {
-  title: "OctiLearn",
-  description:
-    "A program designed to provide a coding environment in which teachers can easily create dedicated programming lessons for their students.",
+  title: "Sqil",
+  description: "A teacher-centric platform for course design.",
 };
 
 export default function RootLayout({ children }: { children: any }) {
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: any }) {
     <html lang="en">
       <head>
         <ColorSchemeScript />
-        <link rel="icon" href="/logo.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
         <MantineProvider theme={theme}>
