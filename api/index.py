@@ -35,11 +35,11 @@ class Users(db.Model):
 app.app_context().push()
 db.create_all()
 
-@app.post("/api/register")
+@app.post("/api/user/register")
 def add_user():
     data = request.get_json()
-    email = data["email"]
-    pw = sha256_crypt.encrypt(data["pw"])
+    email = str(data["email"]).lower()
+    pw = sha256_crypt.hash(data["pw"])
 
     user = Users(email, pw)
     
@@ -54,7 +54,7 @@ def add_user():
     else:
         return f"Invalid email."
 
-@app.post("/api/login")
+@app.post("/api/user/login")
 def check_user():
     data = request.get_json()
     email = data["email"]
@@ -74,7 +74,7 @@ def check_user():
 
     return f"No account exists with {email}."
 
-@app.post("/api/delete")
+@app.post("/api/user/delete")
 def delete_user():
     data = request.get_json()
     email = data["email"]
