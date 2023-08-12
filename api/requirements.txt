@@ -3,8 +3,9 @@ flask-cors
 flask-sqlalchemy
 js2py
 passlib
-psycopg2-binary
-py3dns
 python-dotenv
 sqlalchemy
-validate_email
+email-validator
+Flask-Migrate
+psycopg2-binary
+py3dns

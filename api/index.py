@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from passlib.hash import sha256_crypt
-from validate_email import validate_email
+from email_validator import validate_email, EmailNotValidError
 
 from js2py import eval_js
 
@@ -18,18 +19,20 @@ app = Flask(__name__)
 CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("URL")
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 
 class Users(db.Model):
     __tablename__ = "Users"
 
     id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(320))
     email = db.Column("email", db.String(320))
     pw = db.Column("pw", db.String(256))
 
     __table_args__ = (db.UniqueConstraint(email),)
 
-    def __init__(self, email, pw):
+    def __init__(self, name, email, pw):
+        self.name = name
         self.email = email
         self.pw = pw
 
@@ -38,15 +41,17 @@ app.app_context().push()
 db.create_all()
 
 
-@app.post("/api/user/register")
+@app.route("/api/user/register", methods=["POST"])
 def add_user():
     data = request.get_json()
+    name = str(data["name"])
     email = str(data["email"]).lower()
     pw = sha256_crypt.hash(data["pw"])
 
-    user = Users(email, pw)
+    user = Users(name, email, pw)
 
-    if validate_email(email, verify=True):
+    try:
+        user.email = validate_email(user.email).normalized
         db.session.add(user)
         try:
             db.session.commit()
@@ -54,14 +59,19 @@ def add_user():
             return f"An account already exists using {email}."
 
         return f"Account created using {email}."
-    else:
+    except EmailNotValidError:
         return f"Invalid email."
 
 
-@app.post("/api/user/login")
+@app.route("/api/user/login", methods=["POST"])
 def check_user():
     data = request.get_json()
-    email = data["email"]
+
+    try:
+        email = validate_email(data["email"]).normalized
+    except EmailNotValidError:
+        return "Invalid email"
+
     pw = data["pw"]
 
     check_email = db.session.query(Users).filter(Users.email == email)
@@ -79,7 +89,7 @@ def check_user():
     return f"No account exists with {email}."
 
 
-@app.post("/api/user/delete")
+@app.route("/api/user/delete", methods=["POST"])
 def delete_user():
     data = request.get_json()
     email = data["email"]
@@ -105,7 +115,7 @@ def delete_user():
     return f"No account exists with {email}."
 
 
-@app.post("/api/compiler")
+@app.route("/api/compiler", methods=["POST"])
 def compiler():
     data = request.get_json()
     lang = data["language"]
@@ -130,6 +140,6 @@ def compiler():
                 return {"stdout": "", "stderr": str(e)}
 
         else:
-            raise "Unsupported language"
+            return "Unsupported language"
 
     return run(lang, code)
