@@ -8,13 +8,13 @@ import {
   Progress,
   Stack,
   rem,
-  Text
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconAt, IconX } from "@tabler/icons-react";
-import React from "react";
-import classes from "./login.module.css";
+import React, { useState } from "react";
 import Link from "next/link";
+import axios, { AxiosResponse } from "axios";
 
 const requirements = [
   { re: /^.{6,}$/, label: "Less than 6 characters" },
@@ -26,7 +26,7 @@ const requirements = [
 
 interface Data {
   email: string;
-  password: string;
+  pw: string;
 }
 
 function getStrength(password: string) {
@@ -43,26 +43,30 @@ function getStrength(password: string) {
 
 export default function Login() {
   const data = useForm<Data>({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: "", pw: "" },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (requirements.every(({ re }) => re.test(value)) ? null : "Invalid password")
-    }
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      pw: (value) =>
+        requirements.every(({ re }) => re.test(value))
+          ? null
+          : "Invalid password",
+    },
   });
-  const strength = getStrength(data.values.password);
+  const strength = getStrength(data.values.pw);
   const emailSuggestions =
     data.values.email.length > 0 && !data.values.email.includes("@")
       ? ["gmail.com", "outlook.com", "yahoo.com"].map(
         (provider) => `${data.values.email}@${provider}`,
       )
       : [];
+  const [loginStatus, setLoginStatus] = useState<string>();
 
   const bars = Array(4)
     .fill(0)
     .map((_, index) => (
       <Progress
         value={
-          data.values.password.length > 0 && index === 0
+          data.values.pw.length > 0 && index === 0
             ? 100
             : strength >= ((index + 1) / 4) * 100
               ? 100
@@ -81,7 +85,7 @@ export default function Login() {
         c="red"
         fz="sm"
         gap={rem(3)}
-        display={re.test(data.values.password) ? "none" : "flex"}
+        display={re.test(data.values.pw) ? "none" : "flex"}
         key={index}
       >
         <IconX size="1.2rem" />
@@ -91,7 +95,14 @@ export default function Login() {
   });
 
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        axios
+          .post("/api/user/login", data.values)
+          .then((response) => setLoginStatus(response.data));
+      }}
+    >
       <Stack gap="lg">
         <Autocomplete
           required
@@ -107,15 +118,27 @@ export default function Login() {
             required
             placeholder="Password"
             label="Password"
-            {...data.getInputProps("password")}
+            {...data.getInputProps("pw")}
           />
           <Group gap={5} grow mt="xs" mb="md">
             {bars}
           </Group>
           {checks}
         </div>
-        <Button type="submit" w="100%">Log In</Button>
-        <Text>New to Sqil? <Link href="/signup" style={{ textDecoration: "none" }}>Sign Up</Link></Text>
+        <div>
+          <Button type="submit" w="100%">
+            Log In
+          </Button>
+          <Text size="sm" c="red" mt="xs">
+            {loginStatus}
+          </Text>
+        </div>
+        <Text size="sm">
+          New to Sqil?{"  "}
+          <Link href="/signup" style={{ textDecoration: "none" }}>
+            Sign Up
+          </Link>
+        </Text>
       </Stack>
     </form>
   );

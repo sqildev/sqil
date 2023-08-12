@@ -19,9 +19,10 @@ CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("URL")
 db = SQLAlchemy(app)
 
+
 class Users(db.Model):
     __tablename__ = "Users"
-    
+
     id = db.Column("id", db.Integer, primary_key=True)
     email = db.Column("email", db.String(320))
     pw = db.Column("pw", db.String(256))
@@ -32,8 +33,10 @@ class Users(db.Model):
         self.email = email
         self.pw = pw
 
+
 app.app_context().push()
 db.create_all()
+
 
 @app.post("/api/user/register")
 def add_user():
@@ -42,17 +45,18 @@ def add_user():
     pw = sha256_crypt.hash(data["pw"])
 
     user = Users(email, pw)
-    
+
     if validate_email(email, verify=True):
         db.session.add(user)
         try:
             db.session.commit()
         except:
             return f"An account already exists using {email}."
-        
+
         return f"Account created using {email}."
     else:
         return f"Invalid email."
+
 
 @app.post("/api/user/login")
 def check_user():
@@ -61,7 +65,7 @@ def check_user():
     pw = data["pw"]
 
     check_email = db.session.query(Users).filter(Users.email == email)
-    
+
     for result in check_email:
         if result:
             check_pw = db.session.query(Users).filter(Users.email == email)
@@ -74,6 +78,7 @@ def check_user():
 
     return f"No account exists with {email}."
 
+
 @app.post("/api/user/delete")
 def delete_user():
     data = request.get_json()
@@ -81,7 +86,7 @@ def delete_user():
     pw = data["pw"]
 
     check_email = db.session.query(Users).filter(Users.email == email)
-    
+
     for result in check_email:
         if result:
             check_pw = db.session.query(Users).filter(Users.email == email)
@@ -99,6 +104,7 @@ def delete_user():
 
     return f"No account exists with {email}."
 
+
 @app.post("/api/compiler")
 def compiler():
     data = request.get_json()
@@ -115,7 +121,7 @@ def compiler():
                 return {"stdout": str(output.getvalue()), "stderr": ""}
             except Exception as e:
                 return {"stdout": "", "stderr": str(e)}
-            
+
         elif lang == "js":
             try:
                 eval_js(code)
