@@ -1,18 +1,16 @@
 import {
   ActionIcon,
   AppShell,
-  Box,
   Burger,
   Button,
   Center,
   Container,
   Group,
   Menu,
-  Title,
+  ScrollArea,
+  Stack,
   UnstyledButton,
   useMantineColorScheme,
-  rem,
-  ScrollArea,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -174,7 +172,11 @@ export default function Shell({ children }: { children?: ReactNode }) {
         </Group>
       </AppShell.Navbar>
 
-      <AppShell.Main mt="xl">{children}</AppShell.Main>
+      <AppShell.Main mt="xl">
+        <Group justify="center" mt="xl">
+          <Stack>{children}</Stack>
+        </Group>
+      </AppShell.Main>
     </AppShell>
   );
 }

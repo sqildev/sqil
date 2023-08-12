@@ -75,7 +75,7 @@ export default function LinksGroup({
               size="1rem"
               stroke={1.5}
               style={{
-                transform: opened ? "rotate(90deg)" : "none"
+                transform: opened ? "rotate(90deg)" : "none",
               }}
             />
           )}
