@@ -28,8 +28,8 @@ export default function Login() {
   const emailSuggestions =
     data.values.email.length > 0 && !data.values.email.includes("@")
       ? ["gmail.com", "outlook.com", "yahoo.com"].map(
-          (provider) => `${data.values.email}@${provider}`,
-        )
+        (provider) => `${data.values.email}@${provider}`,
+      )
       : [];
   const [loginStatus, setLoginStatus] = useState<string>();
 
@@ -59,7 +59,7 @@ export default function Login() {
           {...data.getInputProps("pw")}
         />
         <div>
-          <Button type="submit" w="100%">
+          <Button type="submit" w="100%" variant="gradient">
             Log In
           </Button>
           <Text size="sm" c="red" mt="xs">

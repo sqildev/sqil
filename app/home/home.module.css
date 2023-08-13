@@ -1,11 +1,5 @@
 .bigText {
   font-size: rem(50px);
   font-weight: 1000;
-  text-align: right;
-  float: right;
-}
-
-.laptopImage {
-  height: rem(500px);
-  width: rem(643px);
+  text-align: center;
 }

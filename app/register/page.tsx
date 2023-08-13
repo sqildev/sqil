@@ -139,7 +139,7 @@ export default function Login() {
           {checks}
         </div>
         <div>
-          <Button type="submit" w="100%">
+          <Button type="submit" w="100%" variant="gradient">
             Register
           </Button>
           <Text size="sm" c="red" mt="xs">

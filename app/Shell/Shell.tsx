@@ -1,10 +1,10 @@
 import {
   ActionIcon,
+  ActionIconProps,
   AppShell,
   Burger,
   Button,
   Center,
-  Container,
   Group,
   Menu,
   ScrollArea,
@@ -76,6 +76,10 @@ export default function Shell({ children }: { children?: ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
   const { setColorScheme } = useMantineColorScheme();
 
+  const btn = ({ children, onClick, ...rest }: { children?: ReactNode, rest?: ActionIconProps, onClick?: () => void }) => {
+    return <ActionIcon {...rest} onClick={onClick} variant="gradient">{children}</ActionIcon>;
+  }
+
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link} component={Link} href={item.link}>
@@ -121,43 +125,41 @@ export default function Shell({ children }: { children?: ReactNode }) {
       }}
       withBorder={false}
     >
-      <AppShell.Header className={classes.header}>
-        <Container>
-          <div className={classes.inner}>
-            <UnstyledButton component={Link} href="/">
-              <Logo />
-            </UnstyledButton>
-            <Group>
-              <Group gap={5} visibleFrom="sm">
-                {items}
-                <Button
-                  bg="none"
-                  className={classes.button}
-                  component={Link}
-                  href="/login"
-                >
-                  Sign in
-                </Button>
-              </Group>
-              <LightDark
-                component={ActionIcon}
-                lightProps={{ onClick: () => setColorScheme("dark") }}
-                darkProps={{ onClick: () => setColorScheme("light") }}
-                light={<IconMoon size={30} />}
-                dark={<IconSun size={30} />}
-                h={40}
-                w={40}
-                p={4}
-              />
-              <Burger
-                opened={opened}
-                onClick={toggle}
-                hiddenFrom="sm"
-                size="sm"
-              />
+      <AppShell.Header className={classes.header} pt="lg">
+        <div className={classes.inner}>
+          <UnstyledButton component={Link} href="/">
+            <Logo />
+          </UnstyledButton>
+          <Group>
+            <Group gap={5} visibleFrom="sm">
+              {items}
+              <Button
+                bg="none"
+                className={classes.button}
+                component={Link}
+                href="/login"
+              >
+                Sign in
+              </Button>
             </Group>
-          </div>
-        </Container>
+            <LightDark
+              component={btn}
+              lightProps={{ onClick: () => setColorScheme("dark") }}
+              darkProps={{ onClick: () => setColorScheme("light") }}
+              light={<IconMoon size={30} />}
+              dark={<IconSun size={30} />}
+              h={40}
+              w={40}
+              p={4}
+            />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+          </Group>
+        </div>
       </AppShell.Header>
 
       <AppShell.Navbar className={classes.navbar}>

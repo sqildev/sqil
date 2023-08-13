@@ -1,13 +1,35 @@
 import React from "react";
-import { Title } from "@mantine/core";
+import { Group, Stack, Text } from "@mantine/core";
 import classes from "./home.module.css";
 
 export default function HomePage() {
   return (
-    <>
-      <Title p="xl" className={classes.bigText}>
-        A new framework for course design.
-      </Title>
-    </>
+    <Stack gap={0}>
+      <Group justify="center">
+        <Text className={classes.bigText}>
+          A New
+        </Text>
+        <Text
+          className={classes.bigText}
+          variant="gradient"
+        >
+          Framework
+        </Text>
+        <Text p={0} className={classes.bigText}>
+          for
+        </Text>
+      </Group>
+      <Group justify="center">
+        <Text
+          className={classes.bigText}
+          variant="gradient"
+        >
+          Course
+        </Text>
+        <Text className={classes.bigText}>
+          Design.
+        </Text>
+      </Group>
+    </Stack>
   );
 }
