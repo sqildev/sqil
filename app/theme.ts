@@ -8,6 +8,6 @@ export const theme = createTheme({
   defaultGradient: {
     from: "purple",
     to: "violet",
-    deg: 135
-  }
+    deg: 135,
+  },
 });

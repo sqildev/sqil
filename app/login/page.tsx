@@ -1,20 +1,20 @@
 "use client";
 import {
+  Anchor,
   Autocomplete,
-  Box,
   Button,
-  Group,
+  Container,
+  Paper,
   PasswordInput,
-  Progress,
   Stack,
-  rem,
   Text,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconAt, IconX } from "@tabler/icons-react";
+import { IconAt } from "@tabler/icons-react";
 import React, { useState } from "react";
 import Link from "next/link";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 interface Data {
   email: string;
@@ -28,51 +28,58 @@ export default function Login() {
   const emailSuggestions =
     data.values.email.length > 0 && !data.values.email.includes("@")
       ? ["gmail.com", "outlook.com", "yahoo.com"].map(
-        (provider) => `${data.values.email}@${provider}`,
-      )
+          (provider) => `${data.values.email}@${provider}`,
+        )
       : [];
   const [loginStatus, setLoginStatus] = useState<string>();
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        axios
-          .post("/api/user/login", data.values)
-          .then((response) => setLoginStatus(response.data));
-      }}
-    >
-      <Stack gap="lg">
-        <Autocomplete
-          required
-          label="Email Address"
-          placeholder="Email"
-          leftSection={<IconAt />}
-          leftSectionPointerEvents="none"
-          data={emailSuggestions}
-          {...data.getInputProps("email")}
-        />
-        <PasswordInput
-          required
-          placeholder="Password"
-          label="Password"
-          {...data.getInputProps("pw")}
-        />
-        <div>
-          <Button type="submit" w="100%" variant="gradient">
-            Log In
-          </Button>
-          <Text size="sm" c="red" mt="xs">
-            {loginStatus}
-          </Text>
-        </div>
-        <Text size="sm">
-          New to Sqil?{"  "}
-          <Link href="/register" style={{ textDecoration: "none" }}>
-            Register
-          </Link>
-        </Text>
-      </Stack>
-    </form>
+    <Container size={420} my={40}>
+      <Title c="dimmed" fw={900} ta="center">
+        Welcome back!
+      </Title>
+      <Text c="dimmed" size="sm" ta="center" mt={5}>
+        Don't have a Sqil account?{"  "}
+        <Anchor component={Link} href="/register" size="sm">
+          Register
+        </Anchor>
+      </Text>
+      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            axios
+              .post("/api/user/login", data.values)
+              .then((response) => setLoginStatus(response.data));
+          }}
+        >
+          <Stack gap="lg">
+            <Autocomplete
+              required
+              label="Email Address"
+              placeholder="Email"
+              leftSection={<IconAt />}
+              leftSectionPointerEvents="none"
+              data={emailSuggestions}
+              {...data.getInputProps("email")}
+            />
+            <PasswordInput
+              required
+              placeholder="Password"
+              label="Password"
+              {...data.getInputProps("pw")}
+            />
+            <div>
+              <Button type="submit" variant="gradient" fullWidth>
+                Log In
+              </Button>
+              <Text size="sm" c="red" mt="xs">
+                {loginStatus}
+              </Text>
+            </div>
+          </Stack>
+        </form>
+      </Paper>
+    </Container>
   );
 }

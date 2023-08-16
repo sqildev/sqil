@@ -10,12 +10,16 @@ import {
   rem,
   Text,
   TextInput,
+  Paper,
+  Container,
+  Title,
+  Anchor,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconAt, IconX } from "@tabler/icons-react";
 import React, { useState } from "react";
 import Link from "next/link";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 const requirements = [
   { re: /^.{6,}$/, label: "Less than 6 characters" },
@@ -63,8 +67,8 @@ export default function Login() {
   const emailSuggestions =
     data.values.email.length > 0 && !data.values.email.includes("@")
       ? ["gmail.com", "outlook.com", "yahoo.com"].map(
-        (provider) => `${data.values.email}@${provider}`,
-      )
+          (provider) => `${data.values.email}@${provider}`,
+        )
       : [];
   const [registerStatus, setRegisterStatus] = useState<string>();
 
@@ -76,8 +80,8 @@ export default function Login() {
           data.values.pw.length > 0 && index === 0
             ? 100
             : strength >= ((index + 1) / 4) * 100
-              ? 100
-              : 0
+            ? 100
+            : 0
         }
         color={strength > 80 ? "teal" : strength > 50 ? "yellow" : "red"}
         key={index}
@@ -102,57 +106,71 @@ export default function Login() {
   });
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        axios
-          .post("/api/user/register", data.values)
-          .then((response) => setRegisterStatus(response.data));
-      }}
-    >
-      <Stack gap="lg">
-        <TextInput
-          required
-          label="Name"
-          placeholder="Name"
-          {...data.getInputProps("name")}
-        ></TextInput>
-        <Autocomplete
-          required
-          label="Email Address"
-          placeholder="Email"
-          leftSection={<IconAt />}
-          leftSectionPointerEvents="none"
-          data={emailSuggestions}
-          {...data.getInputProps("email")}
-        />
-        <div>
-          <PasswordInput
-            required
-            placeholder="Password"
-            label="Password"
-            {...data.getInputProps("pw")}
-          />
-          <Group gap={5} grow mt="sm" mb="md">
-            {bars}
-          </Group>
-          {checks}
-        </div>
-        <div>
-          <Button type="submit" w="100%" variant="gradient">
-            Register
-          </Button>
-          <Text size="sm" c="red" mt="xs">
-            {registerStatus}
-          </Text>
-        </div>
-        <Text size="sm">
-          Already have an account?{"  "}
-          <Link href="/login" style={{ textDecoration: "none" }}>
-            Sign In
-          </Link>
-        </Text>
-      </Stack>
-    </form>
+    <Container size={420} my={20}>
+      <Title c="dimmed" fw={900} ta="center">
+        Create an account
+      </Title>
+      <Text c="dimmed" size="sm" ta="center" mt={5}>
+        Already have a Sqil account?{"  "}
+        <Anchor component={Link} href="/login" size="sm">
+          Sign in
+        </Anchor>
+      </Text>
+
+      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            axios
+              .post("/api/user/register", data.values)
+              .then((response) => setRegisterStatus(response.data));
+          }}
+        >
+          <Stack gap="lg">
+            <TextInput
+              required
+              label="Name"
+              placeholder="Name"
+              {...data.getInputProps("name")}
+            ></TextInput>
+            <Autocomplete
+              required
+              label="Email Address"
+              placeholder="Email"
+              leftSection={<IconAt />}
+              leftSectionPointerEvents="none"
+              data={emailSuggestions}
+              {...data.getInputProps("email")}
+            />
+            <div>
+              <PasswordInput
+                required
+                placeholder="Password"
+                label="Password"
+                {...data.getInputProps("pw")}
+              />
+              <Group gap={5} grow mt="sm" mb="md">
+                {bars}
+              </Group>
+              {checks}
+            </div>
+            <div>
+              <Button type="submit" w="100%" variant="gradient" fullWidth>
+                Register
+              </Button>
+              <Text size="sm" c="red" mt="xs">
+                {registerStatus}
+              </Text>
+            </div>
+            <Text size="sm">
+              Already have an account?{"  "}
+              <Link href="/login" style={{ textDecoration: "none" }}>
+                Sign In
+              </Link>
+            </Text>
+          </Stack>
+        </form>
+      </Paper>
+    </Container>
   );
 }

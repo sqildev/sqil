@@ -76,9 +76,21 @@ export default function Shell({ children }: { children?: ReactNode }) {
   const [opened, { toggle }] = useDisclosure(false);
   const { setColorScheme } = useMantineColorScheme();
 
-  const btn = ({ children, onClick, ...rest }: { children?: ReactNode, rest?: ActionIconProps, onClick?: () => void }) => {
-    return <ActionIcon {...rest} onClick={onClick} variant="gradient">{children}</ActionIcon>;
-  }
+  const btn = ({
+    children,
+    onClick,
+    ...rest
+  }: {
+    children?: ReactNode;
+    rest?: ActionIconProps;
+    onClick?: () => void;
+  }) => {
+    return (
+      <ActionIcon {...rest} onClick={onClick} variant="gradient">
+        {children}
+      </ActionIcon>
+    );
+  };
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -174,8 +186,8 @@ export default function Shell({ children }: { children?: ReactNode }) {
         </Group>
       </AppShell.Navbar>
 
-      <AppShell.Main mt="xl">
-        <Group justify="center" mt="xl">
+      <AppShell.Main>
+        <Group justify="center">
           <Stack>{children}</Stack>
         </Group>
       </AppShell.Main>
