@@ -1,5 +1,6 @@
 flask
 flask-cors
+flask-migrate
 flask-sqlalchemy
 js2py
 passlib
