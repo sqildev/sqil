@@ -1,7 +1,9 @@
+"use client";
 import { Container, Group, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import CourseCard from "./CourseCard/CourseCard";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 export interface Course {
   title: string;
@@ -10,29 +12,36 @@ export interface Course {
   tags: string[];
 }
 
-const courses: Course[] = [
-  {
-    title: "Test Course",
-    author: "Krit Dass",
-    description:
-      "This is a test course that I made with the purpose of testing.",
-    tags: ["stuff", "course", "test"],
-  },
-];
+function filterCourse(course: Course, search: string): boolean {
+  search = search.toLowerCase();
+  return (
+    course.tags.some((tag) => tag.toLowerCase().includes(search)) ||
+    course.title.toLowerCase().includes(search) ||
+    course.description.toLowerCase().includes(search) ||
+    course.author.toLowerCase().includes(search)
+  );
+}
 
 export default function Courses() {
+  const [courses, setCourses] = useState<Course[]>();
+  const [search, setSearch] = useState<string>("");
+  axios.get("/api/course/list").then((res) => setCourses(res.data));
+
   return (
     <Container my={40}>
       <TextInput
         leftSection={<IconSearch />}
-        radius="xl"
-        size="md"
+        radius="md"
         placeholder="Search courses..."
+        value={search}
+        onChange={(e) => setSearch(e.currentTarget.value)}
       ></TextInput>
-      <Group mt="xl">
-        {courses.map((course, i) => (
-          <CourseCard key={i} {...course} />
-        ))}
+      <Group mt="xl" justify="center">
+        {courses
+          ?.filter((course) => filterCourse(course, search))
+          .map((course, i) => (
+            <CourseCard key={i} {...course} />
+          ))}
       </Group>
     </Container>
   );
