@@ -15,6 +15,9 @@
 # flask
 __pycache__
 
+# judge0
+judge0.conf
+
 # production
 /build
 
