@@ -1,9 +1,11 @@
-from .models import *
+from .models import db, Users, Courses, Tags, Enrolled
 
 from flask import request, current_app as app
+from flask_jwt_extended import jwt_required
 
 
 @app.route("/api/course/add", methods=["POST"])
+@jwt_required()
 def add_course():
     data = request.get_json()
     user_id = data["user_id"]
@@ -31,6 +33,7 @@ def add_course():
 
  
 @app.route("/api/course/enroll", methods=["POST"])
+@jwt_required()
 def enroll_course():
     data = request.get_json()
     course_id = data["course_id"]
@@ -48,6 +51,7 @@ def enroll_course():
 
 
 @app.route("/api/course/list", methods=["GET"])
+@jwt_required()
 def list_courses():
     courses = []
     tags = []
@@ -68,6 +72,7 @@ def list_courses():
 
 
 @app.route("/api/course/tags", methods=["GET"])
+@jwt_required()
 def list_tags():
     tags = []
 

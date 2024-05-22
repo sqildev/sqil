@@ -41,3 +41,6 @@ venv
 
 # storybook
 storybook-static
+
+# vscode
+settings.json

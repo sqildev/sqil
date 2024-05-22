@@ -1,12 +1,14 @@
-from .models import *
+from .models import db, Users, Courses, Tags, Enrolled
 
 from flask import request, current_app as app
+from flask_jwt_extended import jwt_required
 
 from passlib.hash import sha256_crypt
 from email_validator import validate_email, EmailNotValidError
 
 
 @app.route("/api/user/register", methods=["POST"])
+@jwt_required()
 def add_user():
     data = request.get_json()
     name = str(data["name"])
@@ -29,6 +31,7 @@ def add_user():
 
 
 @app.route("/api/user/login", methods=["POST"])
+@jwt_required()
 def check_user():
     data = request.get_json()
 
@@ -55,6 +58,7 @@ def check_user():
 
 
 @app.route("/api/user/delete", methods=["POST"])
+@jwt_required()
 def delete_user():
     data = request.get_json()
     email = data["email"]
@@ -81,6 +85,7 @@ def delete_user():
 
 
 @app.route("/api/user/courses_owned", methods=["POST"])
+@jwt_required()
 def list_owned_courses():
     data = request.get_json()
     user_id = data["user_id"]
@@ -104,6 +109,7 @@ def list_owned_courses():
     
 
 @app.route("/api/user/courses_enrolled", methods=["POST"])
+@jwt_required()
 def list_enrolled_courses():
     data = request.get_json()
     user_id = data["user_id"]

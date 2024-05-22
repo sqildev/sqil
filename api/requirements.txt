@@ -2,6 +2,7 @@ flask
 flask-cors
 flask-migrate
 flask-sqlalchemy
+flask_jwt_extended
 js2py
 passlib
 python-dotenv
