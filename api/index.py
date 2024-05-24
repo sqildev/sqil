@@ -32,7 +32,7 @@ migrate = Migrate(app, db)
 app.app_context().push()
 db.create_all()
 
-from _utils import user, course, auth
+from _utils import user, course, auth, compiler
 
 if __name__ == "__main__":
     app.run(debug=True)

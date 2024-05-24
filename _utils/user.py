@@ -27,7 +27,7 @@ def add_user():
 
         return f"Account created using {email}."
     except EmailNotValidError:
-        return f"Invalid email."
+        return "Invalid email."
 
 
 @app.route("/api/user/login", methods=["POST"])

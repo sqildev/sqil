@@ -1,6 +1,6 @@
 from flask import request, current_app as app
-
 from flask_jwt_extended import create_access_token
+
 import os
 
 @app.route("/api/get_token", methods=["POST"])
