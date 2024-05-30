@@ -1,14 +1,13 @@
 from .models import db, Users, Courses, Tags, Enrolled
 
 from flask import request, current_app as app
-from flask_jwt_extended import jwt_required
+from .jwt import create_jwt
 
 from passlib.hash import sha256_crypt
 from email_validator import validate_email, EmailNotValidError
 
 
 @app.route("/api/user/register", methods=["POST"])
-@jwt_required()
 def add_user():
     data = request.get_json()
     name = str(data["name"])
@@ -23,22 +22,21 @@ def add_user():
         try:
             db.session.commit()
         except:
-            return f"An account already exists using {email}."
+            return create_jwt({"msg": f"An account already exists using {email}."}), 400
 
-        return f"Account created using {email}."
+        return create_jwt({"msg": f"Account created using {email}."}), 200
     except EmailNotValidError:
-        return "Invalid email."
+        return create_jwt({"msg": "Invalid email."}), 400
 
 
 @app.route("/api/user/login", methods=["POST"])
-@jwt_required()
 def check_user():
     data = request.get_json()
 
     try:
         email = validate_email(data["email"]).normalized
     except EmailNotValidError:
-        return "Invalid email"
+        return create_jwt({"msg": "Invalid email."}), 400
 
     pw = data["pw"]
 
@@ -50,15 +48,14 @@ def check_user():
 
             for result in check_pw:
                 if sha256_crypt.verify(pw, result.pw):
-                    return "Login successful"
+                    return create_jwt({"msg": "Login successful."}), 200
                 else:
-                    return f"Incorrect password."
+                    return create_jwt({"msg": "Incorrect password."}), 400
 
-    return f"No account exists with {email}."
+    return create_jwt({"msg": f"No account exists with {email}."}), 400
 
 
 @app.route("/api/user/delete", methods=["POST"])
-@jwt_required()
 def delete_user():
     data = request.get_json()
     email = data["email"]
@@ -75,17 +72,16 @@ def delete_user():
                     db.session.query(Users).filter(Users.email == email).delete()
                     try:
                         db.session.commit()
-                        return "Account successfully removed."
+                        return create_jwt({"msg": "Account successfully removed."}), 200
                     except:
-                        return "There was a problem deleting your account."
+                        return create_jwt({"msg": "There was a problem deleting your account."}), 400
                 else:
-                    return f"Incorrect password."
+                    return create_jwt({"msg": "Incorrect password."}), 400
 
-    return f"No account exists with {email}."
+    return create_jwt({"msg": f"No account exists with {email}."}), 400
 
 
 @app.route("/api/user/courses_owned", methods=["POST"])
-@jwt_required()
 def list_owned_courses():
     data = request.get_json()
     user_id = data["user_id"]
@@ -103,13 +99,12 @@ def list_owned_courses():
         courses.append({"id": course.course_id, "author": name, "title": course.title, "description": course.description, "tags": tags})
 
     try:
-        return courses
+        return create_jwt({"courses": courses}), 200
     except:
-        return "There was a problem listing the courses."
+        return create_jwt({"msg": "There was a problem listing the courses."}), 400
     
 
 @app.route("/api/user/courses_enrolled", methods=["POST"])
-@jwt_required()
 def list_enrolled_courses():
     data = request.get_json()
     user_id = data["user_id"]
@@ -129,6 +124,6 @@ def list_enrolled_courses():
             courses.append({"id": course.course_id, "author": name, "title": course.title, "description": course.description, "tags": tags})
 
     try:
-        return courses
+        return create_jwt({"courses": courses}), 200
     except:
-        return "There was a problem listing the courses."
+        return create_jwt({"msg": "There was a problem listing the courses."}), 400

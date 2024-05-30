@@ -1,11 +1,9 @@
 from .models import db, Users, Courses, Tags, Enrolled
 
 from flask import request, current_app as app
-from flask_jwt_extended import jwt_required
-
+from .jwt import create_jwt
 
 @app.route("/api/course/add", methods=["POST"])
-@jwt_required()
 def add_course():
     data = request.get_json()
     user_id = data["user_id"]
@@ -27,13 +25,12 @@ def add_course():
     try:
         db.session.commit()
     except:
-        return "There was a problem creating this course."
+        return create_jwt({"msg": "There was a problem creating this course."}), 400
     
-    return "Course created successfully."
+    return create_jwt({"msg": "Course created successfully."}), 200
 
  
 @app.route("/api/course/enroll", methods=["POST"])
-@jwt_required()
 def enroll_course():
     data = request.get_json()
     course_id = data["course_id"]
@@ -45,13 +42,12 @@ def enroll_course():
     try:
         db.session.commit()
     except:
-        return "There was a problem enrolling in this course."
+        return create_jwt({"msg": "There was a problem enrolling in this course."}), 400
     
-    return "Successfully enrolled."
+    return create_jwt({"msg": "Successfully enrolled."}), 200
 
 
 @app.route("/api/course/list", methods=["GET"])
-@jwt_required()
 def list_courses():
     courses = []
     tags = []
@@ -64,19 +60,21 @@ def list_courses():
             tags.append(tag.name)
         
         courses.append({"id": course.course_id, "author": name, "title": course.title, "description": course.description, "tags": tags})
-
+    
     try:
-        return courses
+        return create_jwt({"courses": courses}), 200
     except:
-        return "There was a problem listing the courses."
+        return create_jwt({"msg": "There was a problem listing the courses."}), 400
 
 
 @app.route("/api/course/tags", methods=["GET"])
-@jwt_required()
 def list_tags():
     tags = []
 
     for tag in db.session.query(Tags).distinct(Tags.name):
         tags.append(tag.name)
     
-    return tags
+    try:
+        return create_jwt({"tags": tags}), 200
+    except:
+        return create_jwt({"msg": "There was a problem listing the tags."}), 400

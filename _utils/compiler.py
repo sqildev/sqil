@@ -1,10 +1,10 @@
 from flask import request, current_app as app
-from flask_jwt_extended import jwt_required
+from .jwt import create_jwt
 
 import requests
 
+
 @app.route("/api/compiler", methods=["POST"])
-@jwt_required()
 def compiler():
     data = request.get_json()
     code = data["code"]
@@ -24,4 +24,4 @@ def compiler():
         r2 = requests.get(url + "/" + str(response["token"]))
         status = r2.json()["status"]["description"]
     
-    return r2.json()
+    return create_jwt(r2.json()), 200
