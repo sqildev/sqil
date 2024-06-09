@@ -6,6 +6,32 @@ x-logging:
       max-size: 100M
 
 services:
+  # Frontend
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    ports: 
+      - 3000:3000
+    depends_on:
+      - api
+    hostname: "0.0.0.0"
+  
+  # Backend
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    ports:
+      - 5000:5000
+    hostname: "0.0.0.0"
+    depends_on:
+      - server
+      - workers
+      - db
+      - redis
+  
+  # Judge0
   server:
     image: judge0/judge0:1.13.1
     volumes:
@@ -15,6 +41,9 @@ services:
     privileged: true
     <<: *default-logging
     restart: always
+    depends_on:
+      - db
+      - redis
 
   workers:
     image: judge0/judge0:1.13.1
@@ -24,6 +53,9 @@ services:
     privileged: true
     <<: *default-logging
     restart: always
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:16.2
@@ -45,3 +77,4 @@ services:
 
 volumes:
   data:
+    

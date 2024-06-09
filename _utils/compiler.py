@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 from .jwt import sign_jwt
 
 import requests
+from time import sleep
 
 
 @app.route("/api/compiler", methods=["POST"])
@@ -12,7 +13,7 @@ def compiler():
     code = data["code"]
     id = data["id"]
     
-    url = "http://localhost:2358/submissions"
+    url = "http://server:2358/submissions"
     post = {
         "source_code": code,
         "language_id": id
@@ -25,5 +26,6 @@ def compiler():
     while (status != "Accepted"):
         r2 = requests.get(url + "/" + str(response["token"]))
         status = r2.json()["status"]["description"]
+        sleep(0.25)
     
     return sign_jwt(r2.json()), 200
