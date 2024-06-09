@@ -1,27 +1,29 @@
 import "@mantine/core/styles.css";
 import React from "react";
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
-import { theme } from "./theme";
-import Shell from "./Shell";
+import { ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
+import Shell from "./Shell";
+import Providers from "./providers";
 
 export const metadata = {
-  title: "Sqil",
-  description: "A teacher-centric platform for course design.",
+    title: "Sqil",
+    description: "A teacher-centric platform for course design.",
 };
 
 export default function RootLayout({ children }: { children: any }) {
-  return (
-    <html lang="en">
-      <head>
-        <ColorSchemeScript />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body>
-        <MantineProvider theme={theme}>
-          <Shell>{children}</Shell>
-        </MantineProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <head>
+                <ColorSchemeScript />
+                <link rel="icon" href="/favicon.ico" />
+            </head>
+            <body>
+                <Providers>
+                    <Shell>
+                        {children}
+                    </Shell>
+                </Providers>
+            </body>
+        </html>
+    );
 }
