@@ -1,8 +1,8 @@
-from .models import db, Users, Courses, Tags, Enrolled
+from utils.models import db, Users, Courses, Tags, Enrolled
 
 from flask import request, current_app as app
 from flask_jwt_extended import jwt_required
-from .jwt import sign_jwt
+from utils.jwt import sign_jwt
 
 @app.route("/api/course/add", methods=["POST"])
 @jwt_required()

@@ -1,6 +1,6 @@
 from flask import request, current_app as app
 from flask_jwt_extended import jwt_required
-from .jwt import sign_jwt
+from utils.jwt import sign_jwt
 
 import requests
 from time import sleep

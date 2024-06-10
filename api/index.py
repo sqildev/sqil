@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-from _utils.models import db
+from utils.models import db
 
 import os
 from dotenv import load_dotenv
@@ -28,7 +28,7 @@ migrate = Migrate(app, db)
 app.app_context().push()
 db.create_all()
 
-from _utils import user, course, compiler
+from project import user, course, compiler
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

@@ -8,4 +8,4 @@ WORKDIR /api
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5000
-CMD ["python3", "-m", "flask", "--app", "api/index", "run", "-p", "5000", "--host", "0.0.0.0", "--debug"]
+CMD ["waitress-serve", "--port=5000", "index:app"]
