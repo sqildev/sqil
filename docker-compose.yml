@@ -11,12 +11,12 @@ services:
     build:
       context: .
       dockerfile: ./app/Dockerfile
-    ports: 
+    ports:
       - 3000:3000
     depends_on:
       - api
     hostname: "0.0.0.0"
-  
+
   # Backend
   api:
     build:
@@ -30,7 +30,7 @@ services:
       - workers
       - db
       - redis
-  
+
   # Judge0
   server:
     image: judge0/judge0:1.13.1
@@ -77,4 +77,3 @@ services:
 
 volumes:
   data:
-    

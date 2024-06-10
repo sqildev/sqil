@@ -9,7 +9,7 @@ import { decodeJwt } from "jose";
 
 export async function getCourses() {
     return await axios
-        .get("http://localhost:5000/api/course/list")
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/api/course/list`)
         .then((res) => decodeJwt(res.data.jwt).courses)
         .catch((e) => console.error(e)) as Course[];
 }
