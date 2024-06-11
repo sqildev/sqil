@@ -30,6 +30,7 @@ services:
       - workers
       - db
       - redis
+      - pgadmin
 
   # Judge0
   server:
@@ -74,6 +75,15 @@ services:
     env_file: judge0.conf
     <<: *default-logging
     restart: always
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=sqilteam@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=dev
+    ports:
+      - 5050:80
 
 volumes:
   data:
