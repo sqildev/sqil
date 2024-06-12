@@ -10,8 +10,11 @@ from time import sleep
 @jwt_required()
 def compiler():
     data = request.get_json()
-    code = data["code"]
-    id = data["id"]
+    try:
+        code = data["code"]
+        id = data["id"]
+    except Exception as e:
+        return sign_jwt({"msg": "Missing " + str(e)}), 400
     
     url = "http://server:2358/submissions"
     post = {

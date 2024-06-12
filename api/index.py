@@ -28,7 +28,7 @@ migrate = Migrate(app, db)
 app.app_context().push()
 db.create_all()
 
-from project import user, course, compiler
+from project import user, course, compiler, auth
 
 if __name__ == "__main__":
     app.run()
