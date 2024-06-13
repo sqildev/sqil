@@ -19,7 +19,7 @@ import { useForm } from "@mantine/form";
 import { IconAt, IconX } from "@tabler/icons-react";
 import React from "react";
 import Link from "next/link";
-import register from "./register";
+import { register } from "../actions";
 import { useFormStatus, useFormState } from "react-dom";
 
 const requirements = [

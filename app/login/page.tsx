@@ -15,7 +15,7 @@ import { IconAt } from "@tabler/icons-react";
 import React from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
-import login from "./login";
+import { login } from "../actions";
 
 interface Data {
     email: string;

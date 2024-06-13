@@ -25,6 +25,7 @@ services:
     ports:
       - 5000:5000
     hostname: "0.0.0.0"
+    restart: always
     depends_on:
       - server
       - workers
