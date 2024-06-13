@@ -13,12 +13,15 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 
+import datetime
+
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 app.config["SECRET_KEY"] = os.getenv("FLASK_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("URL")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=28)
 
 jwt = JWTManager(app)
 
