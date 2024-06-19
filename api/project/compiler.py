@@ -25,10 +25,12 @@ def compiler():
     r1 = requests.post(url, post)
     response = r1.json()
 
-    status = ""
-    while (status != "Accepted"):
+    output = {}
+    status = "In Queue"
+    while (status in ("In Queue", "Processing")):
         r2 = requests.get(url + "/" + str(response["token"]))
         status = r2.json()["status"]["description"]
+        output = r2.json()
         sleep(0.25)
     
-    return sign_jwt(r2.json()), 200
+    return sign_jwt(output), 200
