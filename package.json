@@ -9,11 +9,17 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@codemirror/lang-cpp": "^6.0.2",
+        "@codemirror/lang-javascript": "^6.2.2",
+        "@codemirror/lang-python": "^6.1.6",
+        "@codemirror/language": "^6.10.2",
         "@mantine/core": "^7.0.0-beta.0",
         "@mantine/form": "^6.0.19",
         "@mantine/hooks": "^7.0.0-beta.0",
         "@tabler/icons-react": "^2.30.0",
         "@tanstack/react-query": "^5.40.1",
+        "@uiw/codemirror-theme-vscode": "^4.22.2",
+        "@uiw/react-codemirror": "^4.22.2",
         "axios": "^1.4.0",
         "jose": "^5.4.0",
         "next": "^14.2.3",

@@ -6,15 +6,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Course } from "./courses/courses";
 
-const apiUrl = "http://api:5000";
+const apiUrl = "http://api:5000/api/";
+const api = axios.create({ baseURL: apiUrl, });
+const rapi = (session: string) => axios.create({ baseURL: apiUrl, headers: { "Authorization": `Bearer ${session}` } });
 
 export async function register(_currentState: unknown, formData: FormData) {
     let ok = false;
-    const msg = await axios.post(`${apiUrl}/api/auth/register`, {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        pw: formData.get("pw")
-    }).then(res => {
+    const msg = await api.post("/auth/register", formData, { headers: { "Content-Type": "multipart/form-data" } }).then(res => {
         const jwt = res.data.jwt;
         const data = decodeJwt(jwt);
 
@@ -30,6 +28,7 @@ export async function register(_currentState: unknown, formData: FormData) {
 
             return data.msg as string
         } else {
+            console.error(error);
             return "Something went wrong.";
         }
     });
@@ -40,7 +39,7 @@ export async function register(_currentState: unknown, formData: FormData) {
 
 export async function login(_currentState: unknown, formData: FormData) {
     let ok = false
-    const msg = await axios.post(`${apiUrl}/api/auth/login`, { email: formData.get("email"), pw: formData.get("pw") }).then(res => {
+    const msg = await api.post("/auth/login", { email: formData.get("email"), pw: formData.get("pw") }).then(res => {
         const jwt = res.data.jwt;
         const data = decodeJwt(jwt);
 
@@ -66,10 +65,22 @@ export async function login(_currentState: unknown, formData: FormData) {
 
 
 export async function getCourses() {
-    return (await axios
-        .get(`${apiUrl}/api/course`)
+    return await api
+        .get("/course")
         .then((res) => decodeJwt(res.data.jwt).courses)
-        .catch((e) => console.error(e))) as Course[];
+        .catch((e) => console.error(e)) as Course[];
+}
+
+export async function runCode(id: number, code: string) {
+    const session = cookies().get("session")?.value;
+    if (!session) redirect("/login");
+
+    return await rapi(session).post("/compiler", { id, code }).then(res => {
+        const jwt = res.data.jwt;
+        const data = decodeJwt(jwt);
+
+        return (data?.stdout ?? data?.compile_output ?? data?.stderr) as string;
+    }).catch(error => console.error(error));
 }
 
 

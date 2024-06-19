@@ -67,7 +67,7 @@ export default function Login() {
                             {...data.getInputProps("pw")}
                         />
                         <div>
-                            <Button type="submit" variant="gradient" onClick={e => pending && e.preventDefault()} fullWidth>
+                            <Button type="submit" disabled={pending} variant="gradient" onClick={e => pending && e.preventDefault()} fullWidth>
                                 Log In
                             </Button>
                             {errorMessage && <Text size="sm" c="red" mt="xs">{errorMessage}</Text>}
