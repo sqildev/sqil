@@ -9,13 +9,15 @@ class Users(db.Model):
     name = db.Column("name", db.String(320))
     email = db.Column("email", db.String(320))
     pw = db.Column("pw", db.String(256))
+    pfp = db.Column("pfp", db.String(256))
 
     __table_args__ = (db.UniqueConstraint(email),)
 
-    def __init__(self, name, email, pw):
+    def __init__(self, name, email, pw, pfp):
         self.name = name
         self.email = email
         self.pw = pw
+        self.pfp = pfp
 
 class Courses(db.Model):
     __tablename__ = "Courses"

@@ -3,21 +3,35 @@ from utils.models import db, Users
 from flask import request, current_app as app
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from utils.jwt import sign_jwt
+from utils.upload import get_extension, upload_file
 
 from passlib.hash import sha256_crypt
 
 
 @app.route("/api/auth/register", methods=["POST"])
 def add_user():
-    data = request.get_json()
+    data = dict(request.form)
     try:
         name = str(data["name"])
         email = str(data["email"]).lower()
         pw = sha256_crypt.hash(data["pw"])
     except Exception as e:
         return sign_jwt({"msg": "Missing " + str(e)}), 400
+    
+    try:
+        pfp = request.files.get("pfp")
 
-    user = Users(name, email, pw)
+        if get_extension(pfp.filename) not in ("jpeg", "jpg", "png"):
+            return sign_jwt({"msg": "Invalid file extension for profile picture. Only .jpeg, .jpg, and .png is allowed."}), 400
+        
+        filename = upload_file(pfp)
+    except:
+        filename = "default_pfp"
+    
+    if not filename:
+        return sign_jwt({"msg": "A problem occurred uploading the profile picture."}), 400
+    
+    user = Users(name, email, pw, filename)
     
     db.session.add(user)
 
@@ -57,7 +71,6 @@ def check_user():
 @app.route("/api/auth/profile", methods=["GET"])
 @jwt_required()
 def check_session():
-    user_id = -1
     try:
         user_id = get_jwt_identity()
     except:

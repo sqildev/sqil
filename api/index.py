@@ -22,6 +22,8 @@ CORS(app)
 app.config["SECRET_KEY"] = os.getenv("FLASK_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("URL")
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=28)
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1000 * 1000
+app.config['UPLOAD_FOLDER'] = "./files"
 
 jwt = JWTManager(app)
 
