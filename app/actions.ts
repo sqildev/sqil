@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Course } from "./courses/courses";
 
-const apiUrl = "http://api:5000/api/";
+const apiUrl = "http://localhost:5000/api/";
 const api = axios.create({ baseURL: apiUrl, });
 const rapi = (session: string) => axios.create({ baseURL: apiUrl, headers: { "Authorization": `Bearer ${session}` } });
 
@@ -80,7 +80,10 @@ export async function runCode(id: number, code: string) {
         const data = decodeJwt(jwt);
 
         return (data?.stdout ?? data?.compile_output ?? data?.stderr) as string;
-    }).catch(error => console.error(error));
+    }).catch(error => {
+        console.error(error);
+        return "Something went wrong.";
+    });
 }
 
 
