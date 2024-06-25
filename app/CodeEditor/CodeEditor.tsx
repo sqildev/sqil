@@ -1,14 +1,21 @@
 "use client";
 import React, { useState, useTransition } from "react";
-import { useComputedColorScheme } from "@mantine/core";
+import {
+  Button,
+  Code,
+  Paper,
+  Tabs,
+  rem,
+  useComputedColorScheme,
+} from "@mantine/core";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
 import { python } from "@codemirror/lang-python";
 import { javascript } from "@codemirror/lang-javascript";
 import { cpp } from "@codemirror/lang-cpp";
 import { LanguageSupport } from "@codemirror/language";
-import { Button, Code } from "@mantine/core";
 import { runCode } from "../actions";
+import { IconCode, IconKeyboard } from "@tabler/icons-react";
 
 function CodeEditor({ language }: { language: string }) {
   const colorscheme = useComputedColorScheme("dark");
@@ -27,25 +34,43 @@ function CodeEditor({ language }: { language: string }) {
   const onClick = () => {
     startTransition(async () => {
       const output = languageId && (await runCode(languageId, code));
-      setMsg(!output && output !== "" ? "Something went wrong." : output);
+      setMsg(output || "");
     });
   };
 
   return (
-    <>
-      <ReactCodeMirror
-        value={code}
-        onChange={(value) => setCode(value)}
-        height="400px"
-        width="500px"
-        theme={colorscheme === "dark" ? vscodeDark : vscodeLight}
-        extensions={languageSupport && [languageSupport]}
-      />
-      <Button disabled={isPending} onClick={onClick}>
-        {isPending ? "Running..." : "Run Code"}
-      </Button>
-      {!isPending && <Code block>{msg}</Code>}
-    </>
+    <Paper withBorder shadow="md" p={10}>
+      <Tabs defaultValue="code">
+        <Tabs.List>
+          <Tabs.Tab value="code" leftSection={<IconCode />}>
+            Code
+          </Tabs.Tab>
+          <Tabs.Tab value="output" leftSection={<IconKeyboard />}>
+            Output
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="code">
+          <ReactCodeMirror
+            value={code}
+            height={rem("400px")}
+            width={rem("600px")}
+            onChange={(value) => setCode(value)}
+            theme={colorscheme === "dark" ? vscodeDark : vscodeLight}
+            extensions={languageSupport && [languageSupport]}
+          />
+          <Button onClick={onClick} disabled={isPending} fullWidth>
+            {isPending ? "Running..." : "Run Code"}
+          </Button>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="output">
+          <Code h={rem(435)} w={rem("600px")} block>
+            {msg}
+          </Code>
+        </Tabs.Panel>
+      </Tabs>
+    </Paper>
   );
 }
 

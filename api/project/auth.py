@@ -26,7 +26,7 @@ def add_user():
         
         filename = upload_file(pfp)
     except:
-        filename = "default_pfp"
+        filename = "default_pfp.png"
     
     if not filename:
         return sign_jwt({"msg": "A problem occurred uploading the profile picture."}), 400
