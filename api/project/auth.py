@@ -8,7 +8,7 @@ from utils.upload import get_extension, upload_file
 from passlib.hash import sha256_crypt
 
 
-@app.route("/api/auth/register", methods=["POST"])
+@app.route("/auth/register", methods=["POST"])
 def add_user():
     data = dict(request.form)
     try:
@@ -44,7 +44,7 @@ def add_user():
     return sign_jwt({"msg": f"Account created using {email}.", "jwt": token}), 200
 
 
-@app.route("/api/auth/login", methods=["POST"])
+@app.route("/auth/login", methods=["POST"])
 def check_user():
     data = request.get_json()
     try:
@@ -68,7 +68,7 @@ def check_user():
 
     return sign_jwt({"msg": f"No account exists with {email}."}), 400
 
-@app.route("/api/auth/profile", methods=["GET"])
+@app.route("/auth/profile", methods=["GET"])
 @jwt_required()
 def check_session():
     try:
@@ -79,8 +79,9 @@ def check_session():
     for user in db.session.query(Users).filter(Users.id == user_id):
         name = user.name
         email = user.email
+        pfp = user.pfp
 
     try:
-        return sign_jwt({"msg": "Session successfully verified.", "name": name, "email": email}), 200
+        return sign_jwt({"msg": "Session successfully verified.", "name": name, "email": email, "pfp": pfp}), 200
     except:
         return sign_jwt({"msg": "There was a problem finding the user."}), 400

@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from utils.jwt import sign_jwt
 
 
-@app.route("/api/course", methods=["GET"])
+@app.route("/course", methods=["GET"])
 def list_courses():
     courses = []
     tags = []
@@ -25,7 +25,7 @@ def list_courses():
         return sign_jwt({"msg": "There was a problem listing the courses."}), 400
 
 
-@app.route("/api/course/tags", methods=["GET"])
+@app.route("/course/tags", methods=["GET"])
 def list_tags():
     tags = []
 
@@ -38,7 +38,7 @@ def list_tags():
         return sign_jwt({"msg": "There was a problem listing the tags."}), 400
 
 
-@app.route("/api/course/add", methods=["POST"])
+@app.route("/course/add", methods=["POST"])
 @jwt_required()
 def add_course():
     data = request.get_json()

@@ -7,7 +7,7 @@ from utils.jwt import sign_jwt
 from passlib.hash import sha256_crypt
 
 
-@app.route("/api/user/<int:id>/courses", methods=["GET"])
+@app.route("/user/<int:id>/courses", methods=["GET"])
 @jwt_required()
 def list_owned_courses(id):
     courses_owned = []
@@ -41,7 +41,7 @@ def list_owned_courses(id):
         return sign_jwt({"msg": "There was a problem listing the courses."}), 400
 
 
-@app.route("/api/user/<int:user_id>/enroll/<int:course_id>", methods=["PUT"])
+@app.route("/user/<int:user_id>/enroll/<int:course_id>", methods=["PUT"])
 @jwt_required()
 def enroll_course(user_id, course_id):
     enroll = Enrolled(course_id, user_id)
@@ -55,7 +55,7 @@ def enroll_course(user_id, course_id):
     return sign_jwt({"msg": "Successfully enrolled."}), 200
 
 
-@app.route("/api/user/<int:id>/delete", methods=["POST"])
+@app.route("/user/<int:id>/delete", methods=["POST"])
 @jwt_required()
 def delete_user(id):
     data = request.get_json()

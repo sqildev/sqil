@@ -6,7 +6,7 @@ import requests
 from time import sleep
 
 
-@app.route("/api/compiler", methods=["POST"])
+@app.route("/compiler", methods=["POST"])
 @jwt_required()
 def compiler():
     data = request.get_json()

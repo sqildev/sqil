@@ -8,10 +8,10 @@ from utils.models import db
 import os
 from dotenv import load_dotenv
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required
 
 import datetime
 
@@ -34,6 +34,11 @@ app.app_context().push()
 db.create_all()
 
 from project import user, course, compiler, auth
+
+@app.route("/files/<path:path>", methods=["GET"])
+@jwt_required()
+def send_file(path):
+    return send_from_directory("files", path)
 
 if __name__ == "__main__":
     app.run()
