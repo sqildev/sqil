@@ -4,13 +4,16 @@ import { ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
 import Shell from "./Shell";
 import Providers from "./providers";
+import { getProfile } from "./actions";
 
 export const metadata = {
   title: "Sqil",
   description: "A teacher-centric platform for course design.",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default async function RootLayout({ children }: { children: any }) {
+  const profile = await getProfile();
+
   return (
     <html lang="en">
       <head>
@@ -19,7 +22,7 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <Providers>
-          <Shell>{children}</Shell>
+          <Shell profile={profile}>{children}</Shell>
         </Providers>
       </body>
     </html>

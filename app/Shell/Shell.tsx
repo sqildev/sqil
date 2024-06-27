@@ -2,6 +2,7 @@ import {
   ActionIcon,
   ActionIconProps,
   AppShell,
+  Avatar,
   Burger,
   Button,
   Center,
@@ -10,6 +11,7 @@ import {
   ScrollArea,
   Stack,
   UnstyledButton,
+  rem,
   useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -18,15 +20,19 @@ import {
   IconBooks,
   IconChevronDown,
   IconInfoSquareRoundedFilled,
+  IconLogout,
   IconMoon,
   IconSun,
+  IconUserFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useTransition } from "react";
 import Logo from "../Logo";
 import LightDark from "./LightDark/LightDark";
 import LinksGroup from "./NavbarLinksGroup/";
 import classes from "./shell.module.css";
+import { ProfileData } from "../profile/profile";
+import { logout } from "../actions";
 
 const links = [
   {
@@ -72,7 +78,13 @@ const links = [
   },
 ];
 
-export default function Shell({ children }: { children?: ReactNode }) {
+export default function Shell({
+  children,
+  profile,
+}: {
+  children?: ReactNode;
+  profile?: ProfileData;
+}) {
   const [opened, { toggle }] = useDisclosure(false);
   const { setColorScheme } = useMantineColorScheme();
 
@@ -125,6 +137,9 @@ export default function Shell({ children }: { children?: ReactNode }) {
     );
   });
 
+  const [logoutPending, startTransition] = useTransition();
+  const logoutTransition = () => startTransition(async () => logout());
+
   return (
     <AppShell
       header={{
@@ -145,14 +160,52 @@ export default function Shell({ children }: { children?: ReactNode }) {
           <Group>
             <Group gap={5} visibleFrom="sm">
               {items}
-              <Button
-                bg="none"
-                className={classes.button}
-                component={Link}
-                href="/login"
-              >
-                Sign in
-              </Button>
+              {profile ? (
+                <Menu
+                  trigger="hover"
+                  transitionProps={{ transition: "scale", duration: 150 }}
+                >
+                  <Menu.Target>
+                    <Avatar src={profile.pfp} size="sm" />
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Label>Welcome back, {profile.name}!</Menu.Label>
+                    <Menu.Item
+                      leftSection={
+                        <IconUserFilled
+                          stroke={1.5}
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      }
+                      component={Link}
+                      href="/profile"
+                    >
+                      Profile
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={
+                        <IconLogout
+                          stroke={1.5}
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      }
+                      color="red"
+                      onClick={logoutTransition}
+                    >
+                      {logoutPending ? "Logging out..." : "Logout"}
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              ) : (
+                <Button
+                  bg="none"
+                  className={classes.button}
+                  component={Link}
+                  href="/login"
+                >
+                  Sign in
+                </Button>
+              )}
             </Group>
             <LightDark
               component={btn}

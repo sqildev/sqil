@@ -12,7 +12,7 @@ export interface ProfileData {
 }
 
 function Profile() {
-  const { data: profile } = useQuery<ProfileData>({
+  const { data: profile } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   });
