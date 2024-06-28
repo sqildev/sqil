@@ -15,11 +15,18 @@ def compiler():
         id = data["id"]
     except Exception as e:
         return sign_jwt({"msg": "Missing " + str(e)}), 400
+
+    stdin = ""
+    try:
+        stdin = data["stdin"]
+    except:
+        pass
     
     url = "http://server:2358/submissions"
     post = {
         "source_code": code,
-        "language_id": id
+        "language_id": id,
+        "stdin": stdin
     }
 
     r1 = requests.post(url, post)

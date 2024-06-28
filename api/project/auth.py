@@ -6,17 +6,21 @@ from utils.jwt import sign_jwt
 from utils.upload import get_extension, upload_file
 
 from passlib.hash import sha256_crypt
+from re import match
 
 
 @app.route("/auth/register", methods=["POST"])
 def add_user():
     data = dict(request.form)
     try:
-        name = str(data["name"])
+        name = str(data["name"]).title()
         email = str(data["email"]).lower()
         pw = sha256_crypt.hash(data["pw"])
     except Exception as e:
         return sign_jwt({"msg": "Missing " + str(e)}), 400
+    
+    if not match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", data["pw"]):
+        return sign_jwt({"msg": "Password does not meet requirements."}), 400
     
     try:
         pfp = request.files.get("pfp")
