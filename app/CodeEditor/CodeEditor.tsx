@@ -30,17 +30,19 @@ function CodeEditor({ language }: { language: string }) {
   const [code, setCode] = useState("");
   const [isPending, startTransition] = useTransition();
   const [msg, setMsg] = useState("");
+  const [tab, setTab] = useState<string | null>("code");
 
   const onClick = () => {
     startTransition(async () => {
       const output = languageId && (await runCode(languageId, code));
       setMsg(output || "");
+      setTab("output");
     });
   };
 
   return (
     <Paper withBorder shadow="md" p={10}>
-      <Tabs defaultValue="code">
+      <Tabs value={tab} onChange={setTab}>
         <Tabs.List>
           <Tabs.Tab value="code" leftSection={<IconCode />}>
             Code
@@ -54,7 +56,7 @@ function CodeEditor({ language }: { language: string }) {
           <ReactCodeMirror
             value={code}
             height={rem("400px")}
-            width={rem("600px")}
+            width="100%"
             onChange={(value) => setCode(value)}
             theme={colorscheme === "dark" ? vscodeDark : vscodeLight}
             extensions={languageSupport && [languageSupport]}
@@ -65,7 +67,7 @@ function CodeEditor({ language }: { language: string }) {
         </Tabs.Panel>
 
         <Tabs.Panel value="output">
-          <Code h={rem(435)} w={rem("600px")} block>
+          <Code h={rem(435)} w="100%" block>
             {msg}
           </Code>
         </Tabs.Panel>

@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Course } from "./courses/courses";
 import { ProfileData } from "./profile/profile";
 
-const apiUrl = "http://api:5000/";
+const apiUrl = "http://localhost:5000/";
 const api = axios.create({ baseURL: apiUrl, });
 const rapi = (session: string) => axios.create({ baseURL: apiUrl, headers: { "Authorization": `Bearer ${session}` } });
 
@@ -95,20 +95,22 @@ export async function getProfile() {
     const session = cookies().get("session")?.value;
     if (!session) return;
 
-    return await rapi(session).get("/auth/profile").then(async (res) => {
-        const jwt = res.data.jwt;
-        const data = decodeJwt(jwt);
-        data.pfp = await rapi(session)
-            .get(`${apiUrl}/files/${data.pfp}`, { responseType: "arraybuffer" })
-            .then(res => btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ""))
-            );
-        data.pfp = `data:;base64,${data.pfp}`;
+    try {
+        return await rapi(session).get("/auth/profile").then(async (res) => {
+            const jwt = res.data.jwt;
+            const data = decodeJwt(jwt);
+            data.pfp = await rapi(session)
+                .get(`${apiUrl}/files/${data.pfp}`, { responseType: "arraybuffer" })
+                .then(res => btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ""))
+                );
+            data.pfp = `data:;base64,${data.pfp}`;
 
-        return data as unknown as ProfileData;
-    }).catch(_error => {
-        cookies().delete("session");
-        redirect("/login");
-    });
+            return data as unknown as ProfileData;
+        })
+    } catch (_error) {
+        cookies().delete("session")
+        redirect("/");
+    }
 }
 
 
