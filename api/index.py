@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-from utils.models import db
+from utils.models import db, Users
 
 import os
 from dotenv import load_dotenv
@@ -32,6 +32,14 @@ migrate = Migrate(app, db)
 
 app.app_context().push()
 db.create_all()
+
+# Admin account
+try:
+    admin = Users("Sqil", "sqilteam@gmail.com", os.getenv("ADMIN"), "default_pfp.png")
+    db.session.add(admin)
+    db.session.commit()
+except:
+    pass
 
 from project import user, course, compiler, auth
 
