@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Course } from "./courses/courses";
 import { ProfileData } from "./profile/profile";
 
-const apiUrl = "http://api:5000/";
+const apiUrl = "http://localhost:5000/";
 const api = axios.create({ baseURL: apiUrl, });
 const rapi = (session: string) => axios.create({ baseURL: apiUrl, headers: { "Authorization": `Bearer ${session}` } });
 
