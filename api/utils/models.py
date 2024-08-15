@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import JSON
 
 db = SQLAlchemy()
 
@@ -33,6 +34,17 @@ class Courses(db.Model):
         self.user_id = user_id
         self.title = title
         self.description = description
+
+class Lessons(db.Model):
+    __tablename__ = "Lessons"
+
+    lesson_id = db.Column("lesson_id", db.Integer, primary_key=True)
+    course_id = db.Column("course_id", db.Integer)
+    content = db.Column("content", JSON)
+
+    def __init__(self, course_id, content):
+        self.course_id = course_id
+        self.content = content
 
 class Tags(db.Model):
     __tablename__ = "Tags"
