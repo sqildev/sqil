@@ -26,6 +26,7 @@ def list_courses():
             tags.append(tag.name)
         
         for lesson in db.session.query(Lessons).filter(Lessons.course_id == course.course_id):
+            lesson.content["id"] = lesson.lesson_id
             lessons.append(lesson.content)
         
         # Only display courses needing approval if admin
@@ -98,6 +99,7 @@ def approve_course(id):
     except:
         return sign_jwt({"msg": "Unable to identify."}), 400
     
+    # If admin, allowed to approve
     if user_id == 1:
         db.session.query(Tags).filter(Tags.course_id == id, Tags.name == "Approving").delete()
         db.session.query(Tags).filter(Tags.course_id == id, Tags.name == "Private").delete()
@@ -246,9 +248,22 @@ def add_lesson(course_id):
     except Exception as e:
         return sign_jwt({"msg": "Missing " + str(e)}), 400
     
-    lesson = Lessons(course_id, content)
-    db.session.add(lesson)
+    try:
+        user_id = get_jwt_identity()
+    except:
+        return sign_jwt({"msg": "Unable to identify."}), 400
     
+    owner = -1
+    for course in db.session.query(Courses).filter(Courses.course_id == course_id):
+        owner = course.user_id
+    
+    # If course owner or admin, allowed to add
+    if owner == user_id or user_id == 1:
+        lesson = Lessons(course_id, content)
+        db.session.add(lesson)
+    else:
+        return sign_jwt({"msg": "Insufficient privileges."}), 400
+
     try:
         db.session.commit()
     except:
