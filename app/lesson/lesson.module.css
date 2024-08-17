@@ -1,0 +1,19 @@
+.editor {
+    margin: auto;
+    min-height: 100%;
+    overflow-y: auto;
+    padding-left: 1rem;
+    max-width: 50vw;
+    overflow-wrap: normal;
+}
+
+.editor:focus {
+    outline: none;
+}
+
+.editorContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: rem(30px);
+}

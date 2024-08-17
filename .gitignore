@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.npmrc
 
 # testing
 /coverage
@@ -45,4 +46,3 @@ storybook-static
 
 # vscode
 settings.json
-
