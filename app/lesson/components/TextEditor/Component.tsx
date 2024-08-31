@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { RichTextEditor, Link } from "@mantine/tiptap";
-import { NodeViewProps, NodeViewWrapper, useEditor } from "@tiptap/react";
+import { NodeViewWrapper, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Superscript from "@tiptap/extension-superscript";
@@ -15,13 +15,11 @@ import python from "highlight.js/lib/languages/python";
 import js from "highlight.js/lib/languages/javascript";
 import cpp from "highlight.js/lib/languages/cpp";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import Placeholder from "@tiptap/extension-placeholder";
 
 const lowlight = createLowlight();
 lowlight.register({ python, js, cpp });
 
-function TextEditor(props: NodeViewProps) {
-  const { placeholder, content } = props.node.attrs;
+function TextEditor() {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
@@ -34,12 +32,7 @@ function TextEditor(props: NodeViewProps) {
       Color,
       TextStyle,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder }),
     ],
-    content,
-    onUpdate({ editor }) {
-      props.updateAttributes({ content: editor.getHTML() });
-    },
   });
 
   return (

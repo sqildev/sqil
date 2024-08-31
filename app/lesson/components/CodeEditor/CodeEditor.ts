@@ -14,12 +14,7 @@ export default Node.create({
             code: {
                 default: ""
             },
-            msg: {
-                default: ""
-            },
-            tab: {
-                default: "code"
-            }
+
         }
     },
     parseHTML() {

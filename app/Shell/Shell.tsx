@@ -154,7 +154,7 @@ export default function Shell({
     >
       <AppShell.Header className={classes.header} pt="lg">
         <div className={classes.inner}>
-          <UnstyledButton component={Link} href="/">
+          <UnstyledButton component={Link} href="/" style={{padding: 0}}>
             <Logo />
           </UnstyledButton>
           <Group>
