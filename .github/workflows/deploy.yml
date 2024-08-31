@@ -9,6 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
    
       - name: Build container
         run: docker compose build
