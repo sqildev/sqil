@@ -11,6 +11,21 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
+      
+      - name: Create .env
+        run: |
+          touch .env
+          echo URL=${{ secrets.URL }} >> .env
+          echo FLASK_KEY=${{ secrets.FLASK_KEY }} >> .env
+          echo JWT_SIGN=${{ secrets.JWT_SIGN }} >> .env
+          echo ADMIN=${{ secrets.ADMIN }} >> .env
+          echo TIPTAP_PRO_TOKEN=${{ secrets.TIPTAP_PRO_TOKEN }} >> .env
+          echo JUDGE0_TELEMETRY_ENABLE=false >> .env
+          echo REDIS_HOST=redis >> .env
+          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
+          echo POSTGRES_USER=sqilteam >> .env
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+          cat .env
    
       - name: Build container
         run: docker compose build
