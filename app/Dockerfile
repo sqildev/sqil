@@ -2,6 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Copy .npmrc for private registry authentication
+COPY .env ./
+ARG TIPTAP_PRO_TOKEN
+ENV TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
+COPY .npmrc ./
+
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
