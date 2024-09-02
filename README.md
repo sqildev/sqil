@@ -1,10 +1,10 @@
 <a href="https://sqil.org/">
-    <img src="logo.png" width="100%" />
+    <img src=".github/img/logo.png" width="100%" />
 </a>
 
 # Our Mission
 
-We aim to make computer science accessible to everyone by helping instructors design courses with ease.
+We aim to make computer science accessible and free to anyone by helping instructors design courses with ease.
 
 # Contributing
 

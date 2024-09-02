@@ -66,7 +66,9 @@ services:
     volumes:
       - data:/var/lib/postgresql/data/
     <<: *default-logging
+    network_mode: host
     restart: always
+    command: postgres -c listen_addresses='*'
 
   redis:
     image: redis:7.2.4
