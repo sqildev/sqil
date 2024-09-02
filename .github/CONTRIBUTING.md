@@ -34,7 +34,13 @@ Also, [join our Slack](https://join.slack.com/t/sqilworkspace/shared_invite/zt-2
 - [Reporting Bugs](#reporting-bugs)
 - [Resolving Bugs](#resolving-bugs)
 # Please Read Before Submitting Changes!
-While you may start up the frontend individually while developing, to test this application as a whole, you MUST install Docker Desktop. Additionally, backend development requires Docker since this is how the database and code compiler is run. [Follow these instructions to install](https://docs.docker.com/desktop/). <br /> <br />
+## Docker
+While you may start up the frontend individually while developing, to test this application as a whole, you MUST install Docker Desktop. Additionally, backend development requires Docker since this is how the database and code compiler is run. [Follow these instructions to install](https://docs.docker.com/desktop/).
+
+## .env File
+You must rename **.env-dev** and **judge0-dev.conf** to **.env** and **judge0.conf**. This acts as a dummy environment file for testing. Be sure to add a [Tiptap Pro token](#obtaining-a-tiptap-pro-token) to the **.env** file if you're testing the frontend.
+
+## Testing
 Make sure that you have tested the website to ensure that it works as intended before submitting any changes. You can build the website with Docker by running:
 ```bash
 cd sqil
