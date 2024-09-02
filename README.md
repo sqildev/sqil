@@ -1,10 +1,6 @@
 <a href="https://sqil.org/">
-    <div style="height: 250px; width: 500px; padding: 30px;">
-        <img src="logo.png" height="100%" width="100%" style="border-radius: 25px; box-shadow: 30px 30px rgb(48,48,48);" />
-    </div>
+    <img src="logo.png" width="100%" />
 </a>
-
-**A new framework for course design.**
 
 # Our Mission
 
