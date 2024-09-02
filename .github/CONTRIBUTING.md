@@ -63,11 +63,24 @@ Now, follow the guidelines for [Submitting changes to frontend](#contributing-to
 
 # Contributing to Frontend
 ## Submitting changes to frontend
-When submitting a pull request, please give us a thorough description of your contribution:
-- Write a clear and descriptive title for the feature added or the issue resolved.
-- List the pages or components you added or modified.
 
-You are now ready to submit your pull request. We will review it as soon as possible! Thanks for your contribution.
+### Bug Fixing Route
+If this is how you are contributing, make sure you have replied to the **issue** you are fixing, even if you raised this issue. Check out [Resolving Bugs](#resolving-bugs) for instructions.
+
+### Adding Issue for New Pages (Or New Features to Pages)
+If this is how you are contributing, please open an **issue** prior to your Pull Request:
+- Apply the "enhancement" and "frontend" tag and any other fitting labels.
+- Write a clear and descriptive title.
+- List the pages you will add or modify.
+- Explain what will be modified for each page.
+
+### Pull Request for Frontend Features
+When submitting a **pull request** for a new page or component, please give us a thorough description of your contribution:
+- Write a clear and descriptive title for the feature added.
+- List the pages or components you added or modified.
+- Explain what's new about each page or component modified.
+
+You are now ready to submit your **pull request**. We will review it as soon as possible! Thanks for your contribution.
 
 # Contributing to Backend
 The backend api is written in Python, using the Flask framework and SQLAlchemy for PostgreSQL queries.
@@ -104,11 +117,24 @@ After clicking the **Send** button, the response should proceed and not raise a 
 Don't forget that we have a [Slack](https://join.slack.com/t/sqilworkspace/shared_invite/zt-2ptm4ft9u-ecqBBSNMolnZGQWbCL8NbA)! If you have trouble testing the backend, please reach out to `@Krish Kapoor` for help.
 
 ## Submitting changes to backend
-When submitting a pull request, please give us a thorough description of your contribution:
-- Write a clear and descriptive title for the feature added or issue resolved.
-- List the api routes you added or modified.
 
-You are now ready to submit your pull request. We will review it as soon as possible! Thanks for your contribution.
+### Bug Fixing Route
+If this is how you are contributing, make sure you have replied to the **issue** you are fixing, even if you raised this issue. Check out [Resolving Bugs](#resolving-bugs) for instructions.
+
+### Adding Issue for  New Routes (Or New Features to Routes)
+If this is how you are contributing, please open an **issue** prior to your Pull Request:
+- Apply the "enhancement" and "backend" tag and any other fitting labels.
+- Write a clear and descriptive title.
+- List the api routes you will add or modify.
+- Explain what each api route will do.
+
+### Pull Request for Backend Features
+When submitting a **pull request** for a new route or feature, please give us a thorough description of your contribution:
+- Write a clear and descriptive title for the route or feature added.
+- List the api routes you added or modified.
+- Explain what each api route does after the changes.
+
+You are now ready to submit your **pull request**. We will review it as soon as possible! Thanks for your contribution.
 
 # Reporting Bugs 
 ![Bug](img/Bug.png)
@@ -125,6 +151,14 @@ Click **Submit new issue**!
 # Resolving Bugs
 - Reply to the issue you are working on fixing. Do not work on an issue someone is already working on.
 - Follow the instructions for [Making and Submitting Changes](#making-and-submitting-changes) and either [Contributing to Frontend](#contributing-to-frontend) or [Contributing to Backend](#contributing-to-backend), depending on the issue.
+
+## Pull Request for Bug Fixes
 - Title your Pull Request "Fix: `issue`", where `issue` is the exact title of the issue you are resolving.
+### Frontend
+- List the pages you modified.
+- Explain how each page/component modification resolves the issue.
+### Backend
+- List the api routes you modified.
+- Explain how each api route resolves the issue.
 
 We will review your changes as soon as possible!
