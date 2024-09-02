@@ -1,66 +1,19 @@
-# Cookies
-- JWT
-    - User id can be obtained from this auth jwt. Decoding the auth jwt will reveal the key "sub." It's value will be user_id.
+<a href="https://sqil.org/">
+    <div style="height: 250px; width: 500px; padding: 30px;">
+        <img src="logo.png" height="100%" width="100%" style="border-radius: 25px; box-shadow: 30px 30px rgb(48,48,48);" />
+    </div>
+</a>
 
-# API Docs
-## Auth
-### /api/auth/register
-- **Method: POST**
-- Register a new user
-- Data
-    - string: name
-    - string: email
-    - string: pw
+**A new framework for course design.**
 
-### /api/auth/login
-- **Method: POST**
-- Login a user and obtain auth JWT
-- Data
-    - string: email
-    - string: pw
+# Our Mission
 
-## User
-### /api/user/*id*/courses
-- **Method: GET**
-- JWT REQURIED
-- Get user *id* 's courses owned and enrolled
+We aim to make computer science accessible to everyone by helping instructors design courses with ease.
 
-### /api/user/*user_id*/enroll/*course_id*
-- **Method: PUT**
-- JWT REQURIED
-- Enroll user *user_id* in course *course_id*
+# Contributing
 
-### /api/user/*user_id*/delete
-- **Method: POST**
-- JWT REQURIED
-- Delete user *user_id*
-- Data
-    - string: email
-    - string: pw
+We welcome and highly encourage contributions as it allows us to see *your* unique insight. Before contributing, please review [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
-## Course
-### /api/course
-- **Method: GET**
-- Get list of all courses with their info
+# License
 
-### /api/course/tags
-- **Method: GET**
-- Get list of all tags
-
-### /api/course/add
-- **Method: POST**
-- JWT REQURIED
-- Add a course
-- Data
-    - int: user_id (course owner)
-    - string: title
-    - string: description
-    - string: tags
-
-## Compiler
-- **Method: POST**
-- JWT REQURIED
-- Compile code from specified language and obtain output
-- Data
-    - int: id (of language as per judge0 docs)
-    - string: code
+Sqil is licensed under the [GNU General Public License](https://www.gnu.org/licenses/#GPL). See [COPYING](COPYING.txt) for more information.
