@@ -15,9 +15,9 @@ services:
         TIPTAP_PRO_TOKEN: ${TIPTAP_PRO_TOKEN}
     ports:
       - 3000:3000
+    network_mode: host
     depends_on:
       - api
-    hostname: "0.0.0.0"
 
   # Backend
   api:
@@ -26,7 +26,7 @@ services:
       dockerfile: ./api/Dockerfile-prod
     ports:
       - 5000:5000
-    hostname: "0.0.0.0"
+    network_mode: host
     restart: always
     depends_on:
       - server

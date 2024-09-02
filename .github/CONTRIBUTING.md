@@ -22,7 +22,7 @@ Go to http://localhost:3000 and test your changes! If it works as intended, you 
 # Making and Submitting Changes
 ## Fork this repository
 Click the fork button on the top of the page to create a copy of this repository in your account. <br />
-![Fork](img/fork.png)
+![Fork](img/Fork.png)
 
 ## Clone this repository
 Open a terminal and run the following git command:
