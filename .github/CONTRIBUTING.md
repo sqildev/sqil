@@ -1,3 +1,27 @@
+<!--toc:start-->
+# Table of Contents
+
+- [How to Contribute?](#how-to-contribute)
+- [Please Read Before Submitting Changes!](#please-read-before-submitting-changes)
+- [Making and Submitting Changes](#making-and-submitting-changes)
+  - [Fork this repository](#fork-this-repository)
+  - [Clone this repository](#clone-this-repository)
+  - [Create a branch](#create-a-branch)
+  - [Make changes and commit](#make-changes-and-commit)
+  - [Push changes to GitHub](#push-changes-to-github)
+  - [Submit your changes for review](#submit-your-changes-for-review)
+- [Contributing to Frontend](#contributing-to-frontend)
+    - [Obtaining a Tiptap Pro token](#obtaining-a-tiptap-pro-token)
+    - [Questions?](#questions-1)
+  - [Submitting changes to frontend](#submitting-changes-to-frontend)
+- [Contributing to Backend](#contributing-to-backend)
+    - [JWT Authentication](#jwt-authentication)
+    - [Questions?](#questions-2)
+  - [Submitting changes to backend](#submitting-changes-to-backend)
+- [Reporting Bugs](#reporting-bugs)
+- [Resolving Bugs](#resolving-bugs)
+<!--toc:end-->
+
 # How to Contribute?
 Thanks for you interest in being a part of our mission!
 Please review [Making and Submitting Changes](#making-and-submitting-changes) to learn how to properly contribute to Sqil's frontend, backend, or resolving bugs. Or, simply report a bug!<br />
@@ -13,7 +37,7 @@ Also, [join our Slack](https://join.slack.com/t/sqilworkspace/shared_invite/zt-2
 While you may start up the frontend individually while developing, to test this application as a whole, you MUST install Docker Desktop. Additionally, backend development requires Docker since this is how the database and code compiler is run. [Follow these instructions to install](https://docs.docker.com/desktop/). <br /> <br />
 Make sure that you have tested the website to ensure that it works as intended before submitting any changes. You can build the website with Docker by running:
 ```bash
-cd /sqil
+cd sqil
 docker compose -f compose-dev.yaml build
 docker compose -f compose-dev.yaml up
 ```
@@ -62,6 +86,25 @@ Click `Compare & pull request`. <br /> <br />
 Now, follow the guidelines for [Submitting changes to frontend](#contributing-to-frontend), [Submitting changes to backend](#contributing-to-backend), or [Resolving Bugs](#resolving-bugs), depending on your contribution.
 
 # Contributing to Frontend
+The frontend is written in Typescript and TSX, utilizing [Next.js](https://nextjs.org/), [Mantine](https://mantine.dev/) for styling and components, and [Tiptap](https://tiptap.dev/) for lesson editing. To start up the frontend, you must have Docker installed and running, and have a Tiptap Pro token (instructions for this are [here](#obtaining-a-tiptap-pro-token)). Review [Please Read Before Submitting Changes!](#please-read-before-submitting-changes) if you have not already done so. When writing code, ensure that there are no type errors.
+
+The frontend can be started with the following commands:
+```bash
+cd sqil
+docker compose -f compose-dev.yaml build app
+docker compose -f compose-dev.yaml up app
+```
+
+Once the container is running, you should be able to access the frontend at http://localhost:3000.
+
+### Obtaining a Tiptap Pro token
+1. Make an account at https://cloud.tiptap.dev/login.
+2. Find your Tiptap Pro token at https://cloud.tiptap.dev/login.
+3. Add your token as an environment variable by adding `TIPTAP_PRO_TOKEN=<token>` (replace `<token>` with your token) to `sqil/.env`
+
+### Questions?
+Don't forget that we have a [Slack](https://join.slack.com/t/sqilworkspace/shared_invite/zt-2ptm4ft9u-ecqBBSNMolnZGQWbCL8NbA)! If you have trouble testing the frontend, please reach out to `@Krit Dass` for help.
+
 ## Submitting changes to frontend
 When submitting a pull request, please give us a thorough description of your contribution:
 - Write a clear and descriptive title for the feature added or the issue resolved.
@@ -75,7 +118,7 @@ To start up the backend, you must have Docker installed and running. Review [Ple
 
 The backend can be started with the following commands:
 ```bash
-cd /sqil
+cd sqil
 docker compose -f compose-dev.yaml build api
 docker compose -f compose-dev.yaml up api
 ```
