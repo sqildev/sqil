@@ -23,5 +23,6 @@ jobs:
             echo "$PWD"
             cd /root/sqil
             git pull
+            docker image prune -a -f
             docker compose build
             docker compose up -d
