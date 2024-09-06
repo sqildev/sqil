@@ -22,7 +22,7 @@ def compiler():
     except:
         pass
     
-    url = "http://server:2358/submissions"
+    url = "http://127.0.0.1:2358/submissions"
     post = {
         "source_code": code,
         "language_id": id,
