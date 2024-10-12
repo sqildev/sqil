@@ -29,7 +29,8 @@ function About() {
             </Link>
             , a project made for the 2022 Congressional App Challenge with the
             goal of helping educators create customizable programming exercises.
-            However, after taking a step back to reevaluate, we realized that
+            We were among the top 5 in our district, but felt there needed to be
+            a change. After taking a step back to re-evaluate, we realized that
             the platform could be something more—it could be a comprehensive
             solution for teaching programming. <br />
             <br />
