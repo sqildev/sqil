@@ -39,21 +39,6 @@ const links = [
     link: "about",
     label: "About",
     icon: IconInfoSquareRoundedFilled,
-    initiallyOpened: true,
-    links: [
-      {
-        link: "/about-us",
-        label: "About Us",
-      },
-      {
-        link: "/team",
-        label: "Our Team",
-      },
-      {
-        link: "/philosophy",
-        label: "Philosophy",
-      },
-    ],
   },
   {
     link: "courses",
@@ -154,7 +139,7 @@ export default function Shell({
     >
       <AppShell.Header className={classes.header} pt="lg">
         <div className={classes.inner}>
-          <UnstyledButton component={Link} href="/" style={{padding: 0}}>
+          <UnstyledButton component={Link} href="/" style={{ padding: 0 }}>
             <Logo />
           </UnstyledButton>
           <Group>
